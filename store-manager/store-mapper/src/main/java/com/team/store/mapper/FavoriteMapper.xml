@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.store.mapper.FavoriteMapper">
+    <resultMap id="BaseResultMap" type="com.team.store.po.Favorite">
+        <id column="FAVORITE_ID" jdbcType="DECIMAL" property="favoriteId"/>
+        <result column="PRO_ID" jdbcType="DECIMAL" property="proId"/>
+        <result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+        <result column="FAVORITE_TIME" jdbcType="TIMESTAMP" property="favoriteTime"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    FAVORITE_ID, PRO_ID, USER_ID, FAVORITE_TIME
+  </sql>
+    <select id="selectByExample" parameterType="com.team.store.po.FavoriteExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from T_FAVORITE
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_FAVORITE
+        where FAVORITE_ID = #{favoriteId,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_FAVORITE
+    where FAVORITE_ID = #{favoriteId,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.team.store.po.FavoriteExample">
+        delete from T_FAVORITE
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.team.store.po.Favorite">
+        <selectKey keyProperty="favoriteId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_FAVORITE_ID.CURRVAL FROM dual
+        </selectKey>
+    insert into T_FAVORITE (FAVORITE_ID, PRO_ID, USER_ID,
+      FAVORITE_TIME)
+    values (SEQ_FAVORITE_ID.NEXTVAL, #{proId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL},
+      #{favoriteTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.team.store.po.Favorite">
+        <selectKey keyProperty="favoriteId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_FAVORITE_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_FAVORITE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="favoriteId != null">
+                FAVORITE_ID,
+            </if>
+            <if test="proId != null">
+                PRO_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="favoriteTime != null">
+                FAVORITE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="favoriteId != null">
+                SEQ_FAVORITE_ID.NEXTVAL,
+            </if>
+            <if test="proId != null">
+                #{proId,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="favoriteTime != null">
+                #{favoriteTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.team.store.po.FavoriteExample" resultType="java.lang.Integer">
+        select count(*) from T_FAVORITE
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update T_FAVORITE
+        <set>
+            <if test="record.favoriteId != null">
+                FAVORITE_ID = #{record.favoriteId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.proId != null">
+                PRO_ID = #{record.proId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.userId != null">
+                USER_ID = #{record.userId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.favoriteTime != null">
+                FAVORITE_TIME = #{record.favoriteTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update T_FAVORITE
+        set FAVORITE_ID = #{record.favoriteId,jdbcType=DECIMAL},
+        PRO_ID = #{record.proId,jdbcType=DECIMAL},
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+        FAVORITE_TIME = #{record.favoriteTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.Favorite">
+        update T_FAVORITE
+        <set>
+            <if test="proId != null">
+                PRO_ID = #{proId,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="favoriteTime != null">
+                FAVORITE_TIME = #{favoriteTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where FAVORITE_ID = #{favoriteId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.team.store.po.Favorite">
+    update T_FAVORITE
+    set PRO_ID = #{proId,jdbcType=DECIMAL},
+      USER_ID = #{userId,jdbcType=DECIMAL},
+      FAVORITE_TIME = #{favoriteTime,jdbcType=TIMESTAMP}
+    where FAVORITE_ID = #{favoriteId,jdbcType=DECIMAL}
+  </update>
+    <resultMap id="FAVORITE_PRO" type="com.team.store.vo.FavoritePro">
+        <id column="FAVORITE_ID" jdbcType="DECIMAL" property="favoriteId"/>
+        <id column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+        <id column="FAVORITE_TIME" jdbcType="TIMESTAMP" property="favoriteTime"/>
+        <id column="PRO_ID" jdbcType="DECIMAL" property="proId"/>
+        <id column="PRO_NAME" jdbcType="VARCHAR" property="proName"/>
+        <id column="PRO_PRICE" jdbcType="DECIMAL" property="proPrice"/>
+        <id column="PRO_IMG" jdbcType="VARCHAR" property="proImg"/>
+        <id column="PC_ID" jdbcType="DECIMAL" property="pcId"/>
+        <id column="PB_ID" jdbcType="DECIMAL" property="pbId"/>
+        <id column="PT_ID" jdbcType="DECIMAL" property="ptId"/>
+        <id column="PRO_LEVEL1" jdbcType="VARCHAR" property="proLevel1"/>
+        <id column="PRO_LEVEL2" jdbcType="VARCHAR" property="proLevel2"/>
+        <id column="PRO_NUM" jdbcType="DECIMAL" property="proNum"/>
+        <id column="PRO_EXPRESS" jdbcType="DECIMAL" property="proExpress"/>
+        <id column="PRO_BIG_IMG" jdbcType="VARCHAR" property="proBigImg"/>
+        <id column="PRO_DESC" jdbcType="VARCHAR" property="proDesc"/>
+    </resultMap>
+  <select id="selectFavoritePro" resultMap="FAVORITE_PRO" parameterType="int">
+      SELECT F.FAVORITE_ID,F.USER_ID,F.FAVORITE_TIME,F.PRO_ID,
+      PRO_NAME,PRO_PRICE,PRO_IMG,PC_ID,PB_ID,PT_ID,PRO_LEVEL1,PRO_LEVEL2,
+      PRO_NUM,PRO_EXPRESS,PRO_BIG_IMG,PRO_DESC
+      FROM T_FAVORITE F LEFT JOIN T_PRODUCT P ON F.PRO_ID = P.PRO_ID
+      WHERE F.USER_ID = #{userId}
+  </select>
+</mapper>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.ShopCartMapper" >
+  <resultMap id="BaseResultMap" type="com.team.store.po.ShopCart" >
+    <result column="SHOPCART_ID" property="shopcartId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="PRO_ID" property="proId" jdbcType="DECIMAL" />
+    <result column="PRO_PRICE" property="proPrice" jdbcType="DECIMAL" />
+    <result column="PRO_MONEY" property="proMoney" jdbcType="DECIMAL" />
+    <result column="PRO_NUM" property="proNum" jdbcType="DECIMAL" />
+    <result column="PRO_TYPE1" property="proType1" jdbcType="VARCHAR" />
+    <result column="PRO_TYPE2" property="proType2" jdbcType="VARCHAR" />
+    <result column="PRO_LEVEL1" property="proLevel1" jdbcType="VARCHAR" />
+    <result column="PRO_LEVEL2" property="proLevel2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SHOPCART_ID, USER_ID, PRO_ID, PRO_PRICE, PRO_MONEY, PRO_NUM, PRO_TYPE1, PRO_TYPE2, 
+    PRO_LEVEL1, PRO_LEVEL2
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.ShopCartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_SHOPCART
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.team.store.po.ShopCartExample" >
+    delete from T_SHOPCART
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.team.store.po.ShopCart">
+    <selectKey keyProperty="shopcartId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_SHOPCART_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_SHOPCART (SHOPCART_ID, USER_ID, PRO_ID, 
+      PRO_PRICE, PRO_MONEY, PRO_NUM, 
+      PRO_TYPE1, PRO_TYPE2, PRO_LEVEL1, 
+      PRO_LEVEL2)
+    values (SEQ_SHOPCART_ID.NEXTVAL, #{userId,jdbcType=DECIMAL}, #{proId,jdbcType=DECIMAL},
+      #{proPrice,jdbcType=DECIMAL}, #{proMoney,jdbcType=DECIMAL}, #{proNum,jdbcType=DECIMAL}, 
+      #{proType1,jdbcType=VARCHAR}, #{proType2,jdbcType=VARCHAR}, #{proLevel1,jdbcType=VARCHAR}, 
+      #{proLevel2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.team.store.po.ShopCart">
+    <selectKey keyProperty="shopcartId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_SHOPCART_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_SHOPCART
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shopcartId != null" >
+        SHOPCART_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="proId != null" >
+        PRO_ID,
+      </if>
+      <if test="proPrice != null" >
+        PRO_PRICE,
+      </if>
+      <if test="proMoney != null" >
+        PRO_MONEY,
+      </if>
+      <if test="proNum != null" >
+        PRO_NUM,
+      </if>
+      <if test="proType1 != null" >
+        PRO_TYPE1,
+      </if>
+      <if test="proType2 != null" >
+        PRO_TYPE2,
+      </if>
+      <if test="proLevel1 != null" >
+        PRO_LEVEL1,
+      </if>
+      <if test="proLevel2 != null" >
+        PRO_LEVEL2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shopcartId != null" >
+        SEQ_SHOPCART_ID.NEXTVAL,
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=DECIMAL},
+      </if>
+      <if test="proPrice != null" >
+        #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proMoney != null" >
+        #{proMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="proNum != null" >
+        #{proNum,jdbcType=DECIMAL},
+      </if>
+      <if test="proType1 != null" >
+        #{proType1,jdbcType=VARCHAR},
+      </if>
+      <if test="proType2 != null" >
+        #{proType2,jdbcType=VARCHAR},
+      </if>
+      <if test="proLevel1 != null" >
+        #{proLevel1,jdbcType=VARCHAR},
+      </if>
+      <if test="proLevel2 != null" >
+        #{proLevel2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.team.store.po.ShopCartExample" resultType="java.lang.Integer" >
+    select count(*) from T_SHOPCART
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_SHOPCART
+    <set >
+      <if test="record.shopcartId != null" >
+        SHOPCART_ID = #{record.shopcartId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proId != null" >
+        PRO_ID = #{record.proId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proPrice != null" >
+        PRO_PRICE = #{record.proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proMoney != null" >
+        PRO_MONEY = #{record.proMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proNum != null" >
+        PRO_NUM = #{record.proNum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proType1 != null" >
+        PRO_TYPE1 = #{record.proType1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proType2 != null" >
+        PRO_TYPE2 = #{record.proType2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proLevel1 != null" >
+        PRO_LEVEL1 = #{record.proLevel1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proLevel2 != null" >
+        PRO_LEVEL2 = #{record.proLevel2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_SHOPCART
+    set SHOPCART_ID = #{record.shopcartId,jdbcType=DECIMAL},
+      USER_ID = #{record.userId,jdbcType=DECIMAL},
+      PRO_ID = #{record.proId,jdbcType=DECIMAL},
+      PRO_PRICE = #{record.proPrice,jdbcType=DECIMAL},
+      PRO_MONEY = #{record.proMoney,jdbcType=DECIMAL},
+      PRO_NUM = #{record.proNum,jdbcType=DECIMAL},
+      PRO_TYPE1 = #{record.proType1,jdbcType=VARCHAR},
+      PRO_TYPE2 = #{record.proType2,jdbcType=VARCHAR},
+      PRO_LEVEL1 = #{record.proLevel1,jdbcType=VARCHAR},
+      PRO_LEVEL2 = #{record.proLevel2,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

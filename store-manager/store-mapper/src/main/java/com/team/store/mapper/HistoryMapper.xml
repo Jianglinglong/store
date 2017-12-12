@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.HistoryMapper">
+	<resultMap id="BaseResultMap" type="com.team.store.po.History">
+		<id column="HISTORY_ID" property="historyId" jdbcType="DECIMAL" />
+		<result column="PRO_ID" property="proId" jdbcType="DECIMAL" />
+		<result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+		<result column="HISTORY_TIME" property="historyTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		HISTORY_ID, PRO_ID, USER_ID, HISTORY_TIME
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.team.store.po.HistoryExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from T_HISTORY
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from T_HISTORY
+		where HISTORY_ID = #{historyId,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from T_HISTORY
+		where HISTORY_ID = #{historyId,jdbcType=DECIMAL}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.team.store.po.HistoryExample">
+		delete from T_HISTORY
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.team.store.po.History">
+		<selectKey keyProperty="historyId" resultType="java.lang.Integer" order="AFTER">
+			SELECT SEQ_HISTORY_ID.CURRVAL FROM dual
+		</selectKey>
+		insert into T_HISTORY (HISTORY_ID, PRO_ID, USER_ID,
+		HISTORY_TIME)
+		values (SEQ_HISTORY_ID.NEXTVAL, #{proId,jdbcType=DECIMAL},
+		#{userId,jdbcType=DECIMAL},
+		#{historyTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.team.store.po.History">
+		<selectKey keyProperty="historyId" resultType="java.lang.Integer" order="AFTER">
+			SELECT SEQ_HISTORY_ID.CURRVAL FROM dual
+		</selectKey>
+		insert into T_HISTORY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="historyId != null">
+				HISTORY_ID,
+			</if>
+			<if test="proId != null">
+				PRO_ID,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="historyTime != null">
+				HISTORY_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="historyId != null">
+				SEQ_HISTORY_ID.NEXTVAL,
+			</if>
+			<if test="proId != null">
+				#{proId,jdbcType=DECIMAL},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=DECIMAL},
+			</if>
+			<if test="historyTime != null">
+				#{historyTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.team.store.po.HistoryExample"
+		resultType="java.lang.Integer">
+		select count(*) from T_HISTORY
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update T_HISTORY
+		<set>
+			<if test="record.historyId != null">
+				HISTORY_ID = #{record.historyId,jdbcType=DECIMAL},
+			</if>
+			<if test="record.proId != null">
+				PRO_ID = #{record.proId,jdbcType=DECIMAL},
+			</if>
+			<if test="record.userId != null">
+				USER_ID = #{record.userId,jdbcType=DECIMAL},
+			</if>
+			<if test="record.historyTime != null">
+				HISTORY_TIME = #{record.historyTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update T_HISTORY
+		set HISTORY_ID = #{record.historyId,jdbcType=DECIMAL},
+		PRO_ID = #{record.proId,jdbcType=DECIMAL},
+		USER_ID = #{record.userId,jdbcType=DECIMAL},
+		HISTORY_TIME = #{record.historyTime,jdbcType=TIMESTAMP}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.History">
+		update T_HISTORY
+		<set>
+			<if test="proId != null">
+				PRO_ID = #{proId,jdbcType=DECIMAL},
+			</if>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=DECIMAL},
+			</if>
+			<if test="historyTime != null">
+				HISTORY_TIME = #{historyTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where HISTORY_ID = #{historyId,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.team.store.po.History">
+		update T_HISTORY
+		set PRO_ID = #{proId,jdbcType=DECIMAL},
+		USER_ID = #{userId,jdbcType=DECIMAL},
+		HISTORY_TIME = #{historyTime,jdbcType=TIMESTAMP}
+		where HISTORY_ID = #{historyId,jdbcType=DECIMAL}
+	</update>
+	<!-- 罗舜尹的自定义 -->
+	<resultMap type="com.team.store.vo.lsy.LsyListFootVO" id="listFoot">
+		<id column="history_Id" property="historyId" jdbcType="DECIMAL" />
+		<result column="pro_Id" property="proId" jdbcType="DECIMAL" />
+		<result column="user_Id" property="userId" jdbcType="DECIMAL" />
+		<result column="pro_num" property="proNum" jdbcType="DECIMAL" />
+		<result column="history_Time" property="historyTime" jdbcType="TIMESTAMP"/>
+		<result column="pro_Img" property="proImg" jdbcType="VARCHAR" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+		<result column="pro_Price" property="proPrice" jdbcType="DECIMAL" />
+	</resultMap>
+	<select id="getFootByUserId" resultMap="listFoot">
+		select t.*,p.pro_num,p.pro_name,p.pro_price,p.pro_img from T_HISTORY t left join
+		t_product p on t.pro_id = p.pro_id where t.user_id =#{param1} order by history_time desc
+	</select>
+</mapper>

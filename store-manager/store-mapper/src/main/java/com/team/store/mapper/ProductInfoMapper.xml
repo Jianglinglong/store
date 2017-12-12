@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.ProductInfoMapper">
+    <resultMap id="BaseResultMap" type="com.team.store.po.ProductInfo">
+        <id column="PRO_ID" property="proId" jdbcType="DECIMAL"/>
+        <result column="PRO_NAME" property="proName" jdbcType="VARCHAR"/>
+        <result column="PRO_PRICE" property="proPrice" jdbcType="DECIMAL"/>
+        <result column="PRO_IMG" property="proImg" jdbcType="VARCHAR"/>
+        <result column="PC_ID" property="pcId" jdbcType="DECIMAL"/>
+        <result column="PB_ID" property="pbId" jdbcType="DECIMAL"/>
+        <result column="PT_ID" property="ptId" jdbcType="DECIMAL"/>
+        <result column="PRO_LEVEL1" property="proLevel1" jdbcType="VARCHAR"/>
+        <result column="PRO_LEVEL2" property="proLevel2" jdbcType="VARCHAR"/>
+        <result column="PRO_NUM" property="proNum" jdbcType="DECIMAL"/>
+        <result column="PRO_EXPRESS" property="proExpress" jdbcType="DECIMAL"/>
+        <result column="PRO_BIG_IMG" property="proBigImg" jdbcType="VARCHAR"/>
+        <result column="PRO_DESC" property="proDesc" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    PRO_ID, PRO_NAME, PRO_PRICE, PRO_IMG, PC_ID, PB_ID, PT_ID, PRO_LEVEL1, PRO_LEVEL2, 
+    PRO_NUM, PRO_EXPRESS, PRO_BIG_IMG, PRO_DESC
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.ProductInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from T_PRODUCT
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from T_PRODUCT
+        where PRO_ID = #{proId,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_PRODUCT
+    where PRO_ID = #{proId,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.team.store.po.ProductInfoExample">
+        delete from T_PRODUCT
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.team.store.po.ProductInfo">
+        <selectKey keyProperty="proId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_PRO_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_PRODUCT (PRO_ID, PRO_NAME, PRO_PRICE,
+        PRO_IMG, PC_ID, PB_ID,
+        PT_ID, PRO_LEVEL1, PRO_LEVEL2,
+        PRO_NUM, PRO_EXPRESS, PRO_BIG_IMG,
+        PRO_DESC)
+        values (SEQ_PRO_ID.NEXTVAL, #{proName,jdbcType=VARCHAR}, #{proPrice,jdbcType=DECIMAL},
+        #{proImg,jdbcType=VARCHAR}, #{pcId,jdbcType=DECIMAL}, #{pbId,jdbcType=DECIMAL},
+        #{ptId,jdbcType=DECIMAL}, #{proLevel1,jdbcType=VARCHAR}, #{proLevel2,jdbcType=VARCHAR},
+        #{proNum,jdbcType=DECIMAL}, #{proExpress,jdbcType=DECIMAL}, #{proBigImg,jdbcType=VARCHAR},
+        #{proDesc,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.team.store.po.ProductInfo">
+        <selectKey keyProperty="proId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_PRO_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_PRODUCT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                PRO_ID,
+            </if>
+            <if test="proName != null">
+                PRO_NAME,
+            </if>
+            <if test="proPrice != null">
+                PRO_PRICE,
+            </if>
+            <if test="proImg != null">
+                PRO_IMG,
+            </if>
+            <if test="pcId != null">
+                PC_ID,
+            </if>
+            <if test="pbId != null">
+                PB_ID,
+            </if>
+            <if test="ptId != null">
+                PT_ID,
+            </if>
+            <if test="proLevel1 != null">
+                PRO_LEVEL1,
+            </if>
+            <if test="proLevel2 != null">
+                PRO_LEVEL2,
+            </if>
+            <if test="proNum != null">
+                PRO_NUM,
+            </if>
+            <if test="proExpress != null">
+                PRO_EXPRESS,
+            </if>
+            <if test="proBigImg != null">
+                PRO_BIG_IMG,
+            </if>
+            <if test="proDesc != null">
+                PRO_DESC,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">
+                SEQ_PRO_ID.NEXTVAL,
+            </if>
+            <if test="proName != null">
+                #{proName,jdbcType=VARCHAR},
+            </if>
+            <if test="proPrice != null">
+                #{proPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="proImg != null">
+                #{proImg,jdbcType=VARCHAR},
+            </if>
+            <if test="pcId != null">
+                #{pcId,jdbcType=DECIMAL},
+            </if>
+            <if test="pbId != null">
+                #{pbId,jdbcType=DECIMAL},
+            </if>
+            <if test="ptId != null">
+                #{ptId,jdbcType=DECIMAL},
+            </if>
+            <if test="proLevel1 != null">
+                #{proLevel1,jdbcType=VARCHAR},
+            </if>
+            <if test="proLevel2 != null">
+                #{proLevel2,jdbcType=VARCHAR},
+            </if>
+            <if test="proNum != null">
+                #{proNum,jdbcType=DECIMAL},
+            </if>
+            <if test="proExpress != null">
+                #{proExpress,jdbcType=DECIMAL},
+            </if>
+            <if test="proBigImg != null">
+                #{proBigImg,jdbcType=VARCHAR},
+            </if>
+            <if test="proDesc != null">
+                #{proDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.team.store.po.ProductInfoExample" resultType="java.lang.Integer">
+        select count(*) from T_PRODUCT
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update T_PRODUCT
+        <set>
+            <if test="record.proId != null">
+                PRO_ID = #{record.proId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.proName != null">
+                PRO_NAME = #{record.proName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.proPrice != null">
+                PRO_PRICE = #{record.proPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.proImg != null">
+                PRO_IMG = #{record.proImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pcId != null">
+                PC_ID = #{record.pcId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.pbId != null">
+                PB_ID = #{record.pbId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.ptId != null">
+                PT_ID = #{record.ptId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.proLevel1 != null">
+                PRO_LEVEL1 = #{record.proLevel1,jdbcType=VARCHAR},
+            </if>
+            <if test="record.proLevel2 != null">
+                PRO_LEVEL2 = #{record.proLevel2,jdbcType=VARCHAR},
+            </if>
+            <if test="record.proNum != null">
+                PRO_NUM = #{record.proNum,jdbcType=DECIMAL},
+            </if>
+            <if test="record.proExpress != null">
+                PRO_EXPRESS = #{record.proExpress,jdbcType=DECIMAL},
+            </if>
+            <if test="record.proBigImg != null">
+                PRO_BIG_IMG = #{record.proBigImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.proDesc != null">
+                PRO_DESC = #{record.proDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update T_PRODUCT
+        set PRO_ID = #{record.proId,jdbcType=DECIMAL},
+        PRO_NAME = #{record.proName,jdbcType=VARCHAR},
+        PRO_PRICE = #{record.proPrice,jdbcType=DECIMAL},
+        PRO_IMG = #{record.proImg,jdbcType=VARCHAR},
+        PC_ID = #{record.pcId,jdbcType=DECIMAL},
+        PB_ID = #{record.pbId,jdbcType=DECIMAL},
+        PT_ID = #{record.ptId,jdbcType=DECIMAL},
+        PRO_LEVEL1 = #{record.proLevel1,jdbcType=VARCHAR},
+        PRO_LEVEL2 = #{record.proLevel2,jdbcType=VARCHAR},
+        PRO_NUM = #{record.proNum,jdbcType=DECIMAL},
+        PRO_EXPRESS = #{record.proExpress,jdbcType=DECIMAL},
+        PRO_BIG_IMG = #{record.proBigImg,jdbcType=VARCHAR},
+        PRO_DESC = #{record.proDesc,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.ProductInfo">
+        update T_PRODUCT
+        <set>
+            <if test="proName != null">
+                PRO_NAME = #{proName,jdbcType=VARCHAR},
+            </if>
+            <if test="proPrice != null">
+                PRO_PRICE = #{proPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="proImg != null">
+                PRO_IMG = #{proImg,jdbcType=VARCHAR},
+            </if>
+            <if test="pcId != null">
+                PC_ID = #{pcId,jdbcType=DECIMAL},
+            </if>
+            <if test="pbId != null">
+                PB_ID = #{pbId,jdbcType=DECIMAL},
+            </if>
+            <if test="ptId != null">
+                PT_ID = #{ptId,jdbcType=DECIMAL},
+            </if>
+            <if test="proLevel1 != null">
+                PRO_LEVEL1 = #{proLevel1,jdbcType=VARCHAR},
+            </if>
+            <if test="proLevel2 != null">
+                PRO_LEVEL2 = #{proLevel2,jdbcType=VARCHAR},
+            </if>
+            <if test="proNum != null">
+                PRO_NUM = #{proNum,jdbcType=DECIMAL},
+            </if>
+            <if test="proExpress != null">
+                PRO_EXPRESS = #{proExpress,jdbcType=DECIMAL},
+            </if>
+            <if test="proBigImg != null">
+                PRO_BIG_IMG = #{proBigImg,jdbcType=VARCHAR},
+            </if>
+            <if test="proDesc != null">
+                PRO_DESC = #{proDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PRO_ID = #{proId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.team.store.po.ProductInfo">
+    update T_PRODUCT
+    set PRO_NAME = #{proName,jdbcType=VARCHAR},
+      PRO_PRICE = #{proPrice,jdbcType=DECIMAL},
+      PRO_IMG = #{proImg,jdbcType=VARCHAR},
+      PC_ID = #{pcId,jdbcType=DECIMAL},
+      PB_ID = #{pbId,jdbcType=DECIMAL},
+      PT_ID = #{ptId,jdbcType=DECIMAL},
+      PRO_LEVEL1 = #{proLevel1,jdbcType=VARCHAR},
+      PRO_LEVEL2 = #{proLevel2,jdbcType=VARCHAR},
+      PRO_NUM = #{proNum,jdbcType=DECIMAL},
+      PRO_EXPRESS = #{proExpress,jdbcType=DECIMAL},
+      PRO_BIG_IMG = #{proBigImg,jdbcType=VARCHAR},
+      PRO_DESC = #{proDesc,jdbcType=VARCHAR}
+    where PRO_ID = #{proId,jdbcType=DECIMAL}
+  </update>
+    <!-- 罗舜尹的自定义productVoList -->
+    <resultMap type="com.team.store.vo.LsyListProduct" id="listProductVoMap">
+        <id column="pro_id" property="proId" jdbcType="DECIMAL"/>
+        <result column="pro_Num" property="proNum" jdbcType="DECIMAL"/>
+        <result column="ps_num" property="psNum" jdbcType="DECIMAL"/>
+        <result column="pro_Express" property="proExpress" jdbcType="DECIMAL"/>
+        <result column="pro_name" property="proName" jdbcType="VARCHAR"/>
+        <result column="pro_Img" property="proImg" jdbcType="VARCHAR"/>
+        <result column="pro_Level1" property="proLevel1" jdbcType="VARCHAR"/>
+        <result column="pro_Level2" property="proLevel2" jdbcType="VARCHAR"/>
+        <result column="pb_name" property="pbName" jdbcType="VARCHAR"/>
+        <result column="pt_name" property="ptName" jdbcType="VARCHAR"/>
+        <result column="pro_Price" property="proPrice" jdbcType="DECIMAL"/>
+    </resultMap>
+    <select id="getProductListBylsy" resultMap="listProductVoMap">
+        select s.ps_num,p.pro_id,p.pro_num,p.pro_express,p.pro_img,p.pro_level1,
+        p.pro_level2,b.pb_name,t.pt_name,p.pro_price,p.pro_name from t_product
+        p,
+        t_pro_type t,T_PRO_BRAND b,t_pro_sales s where p.pb_id=b.pb_id and
+        p.pt_id=t.pt_id
+        and p.pro_id = s.pro_id
+        and pro_name like
+        #{param1}
+        order by ${param2}
+    </select>
+</mapper>

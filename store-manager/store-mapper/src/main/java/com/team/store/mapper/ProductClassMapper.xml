@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.ProductClassMapper" >
+  <resultMap id="BaseResultMap" type="com.team.store.po.ProductClass" >
+    <id column="PC_ID" property="pcId" jdbcType="DECIMAL" />
+    <result column="PC_NAME" property="pcName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    PC_ID, PC_NAME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.ProductClassExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_PRODUCTCLASS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_PRODUCTCLASS
+    where PC_ID = #{pcId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from T_PRODUCTCLASS
+    where PC_ID = #{pcId,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.team.store.po.ProductClassExample" >
+    delete from T_PRODUCTCLASS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.team.store.po.ProductClass">
+    <selectKey keyProperty="pbId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_PRO_CLASS_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_PRODUCTCLASS (PC_ID, PC_NAME)
+    values (SEQ_PRO_CLASS_ID.NEXTVAL, #{pcName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.team.store.po.ProductClass">
+    <selectKey keyProperty="pbId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_PRO_CLASS_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_PRODUCTCLASS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pcId != null" >
+        PC_ID,
+      </if>
+      <if test="pcName != null" >
+        PC_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pcId != null" >
+        SEQ_PRO_CLASS_ID.NEXTVAL,
+      </if>
+      <if test="pcName != null" >
+        #{pcName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.team.store.po.ProductClassExample" resultType="java.lang.Integer" >
+    select count(*) from T_PRODUCTCLASS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_PRODUCTCLASS
+    <set >
+      <if test="record.pcId != null" >
+        PC_ID = #{record.pcId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pcName != null" >
+        PC_NAME = #{record.pcName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_PRODUCTCLASS
+    set PC_ID = #{record.pcId,jdbcType=DECIMAL},
+      PC_NAME = #{record.pcName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.ProductClass" >
+    update T_PRODUCTCLASS
+    <set >
+      <if test="pcName != null" >
+        PC_NAME = #{pcName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PC_ID = #{pcId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.team.store.po.ProductClass" >
+    update T_PRODUCTCLASS
+    set PC_NAME = #{pcName,jdbcType=VARCHAR}
+    where PC_ID = #{pcId,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.ProMonthSalesMapper" >
+  <resultMap id="BaseResultMap" type="com.team.store.po.ProMonthSales" >
+    <id column="PMS_ID" property="pmsId" jdbcType="DECIMAL" />
+    <result column="PMS_NUM" property="pmsNum" jdbcType="DECIMAL" />
+    <result column="PRO_ID" property="proId" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    PMS_ID, PMS_NUM, PRO_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.ProMonthSalesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_PRO_M_SALES
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_PRO_M_SALES
+    where PMS_ID = #{pmsId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from T_PRO_M_SALES
+    where PMS_ID = #{pmsId,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.team.store.po.ProMonthSalesExample" >
+    delete from T_PRO_M_SALES
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.team.store.po.ProMonthSales">
+    <selectKey keyProperty="proId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_PRO_SALE_MONTH_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_PRO_M_SALES (PMS_ID, PMS_NUM, PRO_ID
+      )
+    values (SEQ_PRO_SALE_MONTH_ID.NEXTVAL, #{pmsNum,jdbcType=DECIMAL}, #{proId,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.team.store.po.ProMonthSales">
+    <selectKey keyProperty="proId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_PRO_SALE_MONTH_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_PRO_M_SALES
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pmsId != null" >
+        PMS_ID,
+      </if>
+      <if test="pmsNum != null" >
+        PMS_NUM,
+      </if>
+      <if test="proId != null" >
+        PRO_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pmsId != null" >
+        SEQ_PRO_SALE_MONTH_ID.NEXTVAL,
+      </if>
+      <if test="pmsNum != null" >
+        #{pmsNum,jdbcType=DECIMAL},
+      </if>
+      <if test="proId != null" >
+        #{proId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.team.store.po.ProMonthSalesExample" resultType="java.lang.Integer" >
+    select count(*) from T_PRO_M_SALES
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_PRO_M_SALES
+    <set >
+      <if test="record.pmsId != null" >
+        PMS_ID = #{record.pmsId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pmsNum != null" >
+        PMS_NUM = #{record.pmsNum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proId != null" >
+        PRO_ID = #{record.proId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_PRO_M_SALES
+    set PMS_ID = #{record.pmsId,jdbcType=DECIMAL},
+      PMS_NUM = #{record.pmsNum,jdbcType=DECIMAL},
+      PRO_ID = #{record.proId,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.ProMonthSales" >
+    update T_PRO_M_SALES
+    <set >
+      <if test="pmsNum != null" >
+        PMS_NUM = #{pmsNum,jdbcType=DECIMAL},
+      </if>
+      <if test="proId != null" >
+        PRO_ID = #{proId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where PMS_ID = #{pmsId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.team.store.po.ProMonthSales" >
+    update T_PRO_M_SALES
+    set PMS_NUM = #{pmsNum,jdbcType=DECIMAL},
+      PRO_ID = #{proId,jdbcType=DECIMAL}
+    where PMS_ID = #{pmsId,jdbcType=DECIMAL}
+  </update>
+</mapper>

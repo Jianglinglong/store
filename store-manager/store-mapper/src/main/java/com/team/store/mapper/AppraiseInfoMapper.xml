@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.AppraiseInfoMapper">
+    <resultMap id="BaseResultMap" type="com.team.store.po.AppraiseInfo">
+        <id column="APPR_ID" property="apprId" jdbcType="DECIMAL"/>
+        <result column="APPR_CONTENTS" property="apprContents" jdbcType="VARCHAR"/>
+        <result column="ORDER_ID" property="orderId" jdbcType="DECIMAL"/>
+        <result column="APPR_PICTURE" property="apprPicture" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="APPR_TIME" property="apprTime" jdbcType="TIMESTAMP"/>
+        <result column="APPR_TYPE" property="apprType" jdbcType="DECIMAL"/>
+        <result column="APPR_NONAME" property="apprNoname" jdbcType="VARCHAR"/>
+        <result column="PRO_ID" property="proId" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    APPR_ID, APPR_CONTENTS, ORDER_ID, APPR_PICTURE, USER_ID, APPR_TIME, APPR_TYPE, APPR_NONAME, 
+    PRO_ID
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.AppraiseInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from T_APPRAISE
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from T_APPRAISE
+        where APPR_ID = #{apprId,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_APPRAISE
+    where APPR_ID = #{apprId,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.team.store.po.AppraiseInfoExample">
+        delete from T_APPRAISE
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.team.store.po.AppraiseInfo" >
+        <selectKey keyProperty="apprId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_APPR_ID.CURRVAL FROM dual
+        </selectKey>
+    insert into T_APPRAISE (APPR_ID, APPR_CONTENTS, ORDER_ID, 
+      APPR_PICTURE, USER_ID, APPR_TIME, 
+      APPR_TYPE, APPR_NONAME, PRO_ID
+      )
+    values (SEQ_APPR_ID.NEXTVAL, #{apprContents,jdbcType=VARCHAR}, #{orderId,jdbcType=DECIMAL},
+      #{apprPicture,jdbcType=VARCHAR}, #{userId,jdbcType=DECIMAL}, #{apprTime,jdbcType=TIMESTAMP}, 
+      #{apprType,jdbcType=DECIMAL}, #{apprNoname,jdbcType=VARCHAR}, #{proId,jdbcType=DECIMAL}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.team.store.po.AppraiseInfo">
+        <selectKey keyProperty="apprId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_APPR_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_APPRAISE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="apprId != null">
+                APPR_ID,
+            </if>
+            <if test="apprContents != null">
+                APPR_CONTENTS,
+            </if>
+            <if test="orderId != null">
+                ORDER_ID,
+            </if>
+            <if test="apprPicture != null">
+                APPR_PICTURE,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="apprTime != null">
+                APPR_TIME,
+            </if>
+            <if test="apprType != null">
+                APPR_TYPE,
+            </if>
+            <if test="apprNoname != null">
+                APPR_NONAME,
+            </if>
+            <if test="proId != null">
+                PRO_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="apprId != null">
+                SEQ_APPR_ID.NEXTVAL,
+            </if>
+            <if test="apprContents != null">
+                #{apprContents,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=DECIMAL},
+            </if>
+            <if test="apprPicture != null">
+                #{apprPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="apprTime != null">
+                #{apprTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="apprType != null">
+                #{apprType,jdbcType=DECIMAL},
+            </if>
+            <if test="apprNoname != null">
+                #{apprNoname,jdbcType=VARCHAR},
+            </if>
+            <if test="proId != null">
+                #{proId,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.team.store.po.AppraiseInfoExample" resultType="java.lang.Integer">
+        select count(*) from T_APPRAISE
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update T_APPRAISE
+        <set>
+            <if test="record.apprId != null">
+                APPR_ID = #{record.apprId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.apprContents != null">
+                APPR_CONTENTS = #{record.apprContents,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderId != null">
+                ORDER_ID = #{record.orderId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.apprPicture != null">
+                APPR_PICTURE = #{record.apprPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userId != null">
+                USER_ID = #{record.userId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.apprTime != null">
+                APPR_TIME = #{record.apprTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.apprType != null">
+                APPR_TYPE = #{record.apprType,jdbcType=DECIMAL},
+            </if>
+            <if test="record.apprNoname != null">
+                APPR_NONAME = #{record.apprNoname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.proId != null">
+                PRO_ID = #{record.proId,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update T_APPRAISE
+        set APPR_ID = #{record.apprId,jdbcType=DECIMAL},
+        APPR_CONTENTS = #{record.apprContents,jdbcType=VARCHAR},
+        ORDER_ID = #{record.orderId,jdbcType=DECIMAL},
+        APPR_PICTURE = #{record.apprPicture,jdbcType=VARCHAR},
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+        APPR_TIME = #{record.apprTime,jdbcType=TIMESTAMP},
+        APPR_TYPE = #{record.apprType,jdbcType=DECIMAL},
+        APPR_NONAME = #{record.apprNoname,jdbcType=VARCHAR},
+        PRO_ID = #{record.proId,jdbcType=DECIMAL}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.AppraiseInfo">
+        update T_APPRAISE
+        <set>
+            <if test="apprContents != null">
+                APPR_CONTENTS = #{apprContents,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                ORDER_ID = #{orderId,jdbcType=DECIMAL},
+            </if>
+            <if test="apprPicture != null">
+                APPR_PICTURE = #{apprPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="apprTime != null">
+                APPR_TIME = #{apprTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="apprType != null">
+                APPR_TYPE = #{apprType,jdbcType=DECIMAL},
+            </if>
+            <if test="apprNoname != null">
+                APPR_NONAME = #{apprNoname,jdbcType=VARCHAR},
+            </if>
+            <if test="proId != null">
+                PRO_ID = #{proId,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where APPR_ID = #{apprId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.team.store.po.AppraiseInfo">
+    update T_APPRAISE
+    set APPR_CONTENTS = #{apprContents,jdbcType=VARCHAR},
+      ORDER_ID = #{orderId,jdbcType=DECIMAL},
+      APPR_PICTURE = #{apprPicture,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=DECIMAL},
+      APPR_TIME = #{apprTime,jdbcType=TIMESTAMP},
+      APPR_TYPE = #{apprType,jdbcType=DECIMAL},
+      APPR_NONAME = #{apprNoname,jdbcType=VARCHAR},
+      PRO_ID = #{proId,jdbcType=DECIMAL}
+    where APPR_ID = #{apprId,jdbcType=DECIMAL}
+  </update>
+    <resultMap type="com.team.store.vo.LsyListVOAppraise" id="listAooraise">
+        <id column="appr_Id" property="apprId" jdbcType="DECIMAL"/>
+        <id column="appr_contents" property="apprContents" jdbcType="VARCHAR"/>
+        <id column="appr_noname" property="apprNoname" jdbcType="VARCHAR"/>
+        <id column="appr_picture" property="apprPicture" jdbcType="VARCHAR"/>
+        <id column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <id column="APPR_TIME" property="apprTime" jdbcType="TIMESTAMP"/>
+        <id column="appr_type" property="apprType" jdbcType="DECIMAL"/>
+        <id column="order_levle1" property="orderLevel1" jdbcType="VARCHAR"/>
+        <id column="order_levle2" property="orderLevel2" jdbcType="VARCHAR"/>
+        <!-- rl -->
+        <id column="pro_img" property="proImg" jdbcType="VARCHAR"/>
+        <id column="pro_name" property="proName" jdbcType="VARCHAR"/>
+        
+        
+    </resultMap>
+    <select id="getAppraise" resultMap="listAooraise">
+
+        <!-- select a.appr_time,a.appr_type,a.appr_noname,u.user_name,op.order_levle1,op.order_levle2,a.appr_contents
+            from t_appraise a,t_order_pro op,t_user u where a.user_id = op.user_id and
+            a.pro_id = op.pro_id and u.user_id = a.user_id and a.pro_id = #{param1} -->
+
+        select
+        a.appr_time,a.appr_type,u.user_photo,a.appr_picture,a.appr_noname,u.user_name,op.order_levle1,op.order_levle2,a.appr_contents
+        from t_appraise a left join t_order_pro op on a.pro_id=op.pro_id and
+        a.user_id = op.user_id
+        left join t_user u on a.user_id = u.user_id where
+        a.pro_id = #{param1}
+    </select>
+   <resultMap id="listAppraise" type="com.team.store.vo.rl.AppraiseAndProduct">
+        <id column="appr_Id" property="apprId" jdbcType="DECIMAL"/>
+        <id column="appr_contents" property="apprContents" jdbcType="VARCHAR"/>
+        <id column="appr_noname" property="apprNoname" jdbcType="VARCHAR"/>
+        <id column="appr_picture" property="apprPicture" jdbcType="VARCHAR"/>
+        <id column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <id column="APPR_TIME" property="apprTime" jdbcType="TIMESTAMP"/>
+        <id column="appr_type" property="apprType" jdbcType="DECIMAL"/>
+        <id column="order_levle1" property="orderLevel1" jdbcType="VARCHAR"/>
+        <id column="order_levle2" property="orderLevel2" jdbcType="VARCHAR"/>
+        <!-- rl -->
+        <id column="pro_img" property="proImg" jdbcType="VARCHAR"/>
+        <id column="pro_name" property="proName" jdbcType="VARCHAR"/>
+        
+        
+    </resultMap>
+    <!-- 订单评价连表 -->
+    <select id="getAppraise2" resultMap="listAppraise">
+   select a.appr_time,a.appr_contents,p.pro_name,p.pro_img,op.order_levle1,a.appr_picture,
+   op.order_levle2 from t_appraise a left join t_order_pro op  on a.pro_id = op.pro_id 
+   and a.order_id = op.order_id left join t_product p on a.pro_id = p.pro_id where a.user_id=#{param1,jdbcType=DECIMAL}
+    </select>
+</mapper>

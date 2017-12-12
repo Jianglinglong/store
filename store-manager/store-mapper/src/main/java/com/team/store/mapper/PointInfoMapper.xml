@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.PointInfoMapper">
+    <resultMap id="BaseResultMap" type="com.team.store.po.PointInfo">
+        <id column="POINT_ID" property="pointId" jdbcType="DECIMAL"/>
+        <result column="POINT_NUM" property="pointNum" jdbcType="DECIMAL"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    POINT_ID, POINT_NUM, USER_ID
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.PointInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from T_POINTS
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from T_POINTS
+        where POINT_ID = #{pointId,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_POINTS
+    where POINT_ID = #{pointId,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.team.store.po.PointInfoExample">
+        delete from T_POINTS
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.team.store.po.PointInfo">
+        <selectKey keyProperty="pointId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_POINT_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_POINTS (POINT_ID, POINT_NUM, USER_ID
+        )
+        values (SEQ_POINT_ID.NEXTVAL, #{pointNum,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.team.store.po.PointInfo">
+        <selectKey keyProperty="pointId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_POINT_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_POINTS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pointId != null">
+                POINT_ID,
+            </if>
+            <if test="pointNum != null">
+                POINT_NUM,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pointId != null">
+                SEQ_POINT_ID.NEXTVAL,
+            </if>
+            <if test="pointNum != null">
+                #{pointNum,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.team.store.po.PointInfoExample" resultType="java.lang.Integer">
+        select count(*) from T_POINTS
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update T_POINTS
+        <set>
+            <if test="record.pointId != null">
+                POINT_ID = #{record.pointId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.pointNum != null">
+                POINT_NUM = #{record.pointNum,jdbcType=DECIMAL},
+            </if>
+            <if test="record.userId != null">
+                USER_ID = #{record.userId,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update T_POINTS
+        set POINT_ID = #{record.pointId,jdbcType=DECIMAL},
+        POINT_NUM = #{record.pointNum,jdbcType=DECIMAL},
+        USER_ID = #{record.userId,jdbcType=DECIMAL}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.PointInfo">
+        update T_POINTS
+        <set>
+            <if test="pointNum != null">
+                POINT_NUM = #{pointNum,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where POINT_ID = #{pointId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.team.store.po.PointInfo">
+    update T_POINTS
+    set POINT_NUM = #{pointNum,jdbcType=DECIMAL},
+      USER_ID = #{userId,jdbcType=DECIMAL}
+    where POINT_ID = #{pointId,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.QuestionInfoMapper">
+    <resultMap id="BaseResultMap" type="com.team.store.po.QuestionInfo">
+        <id column="QUES_ID" property="quesId" jdbcType="DECIMAL"/>
+        <result column="QUES_CONTEXTONE" property="quesContextone" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    QUES_ID, QUES_CONTEXTONE
+  </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.QuestionInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from T_QUESTION
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByQuesId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from T_QUESTION
+        where QUES_ID = #{quesId,jdbcType=DECIMAL}
+    </select>
+
+    <select id="selectQuestionByContext" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_QUESTION
+        where QUES_CONTEXTONE = #{quesContextone}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_QUESTION
+    where QUES_ID = #{quesId,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.team.store.po.QuestionInfoExample">
+        delete from T_QUESTION
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+
+    <insert id="insert" parameterType="com.team.store.po.QuestionInfo">
+        <selectKey keyProperty="quesId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_QUESTION_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_QUESTION (QUES_ID, QUES_CONTEXTONE)
+        values (SEQ_QUESTION_ID.NEXTVAL, #{quesContextone,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.team.store.po.QuestionInfo">
+        <selectKey keyProperty="quesId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_QUESTION_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_QUESTION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="quesId != null">
+                QUES_ID,
+            </if>
+            <if test="quesContextone != null">
+                QUES_CONTEXTONE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="quesId != null">
+                SEQ_QUESTION_ID.NEXTVAL,
+            </if>
+            <if test="quesContextone != null">
+                #{quesContextone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.team.store.po.QuestionInfoExample" resultType="java.lang.Integer">
+        select count(*) from T_QUESTION
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update T_QUESTION
+        <set>
+            <if test="record.quesId != null">
+                QUES_ID = #{record.quesId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.quesContextone != null">
+                QUES_CONTEXTONE = #{record.quesContextone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update T_QUESTION
+        set QUES_ID = #{record.quesId,jdbcType=DECIMAL},
+        QUES_CONTEXTONE = #{record.quesContextone,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.QuestionInfo">
+        update T_QUESTION
+        <set>
+            <if test="quesContextone != null">
+                QUES_CONTEXTONE = #{quesContextone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where QUES_ID = #{quesId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.team.store.po.QuestionInfo">
+    update T_QUESTION
+    set QUES_CONTEXTONE = #{quesContextone,jdbcType=VARCHAR}
+    where QUES_ID = #{quesId,jdbcType=DECIMAL}
+  </update>
+    <!-- 根据用户名查找 -->
+    <select id="selectByUserKey" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List"/>
+        from T_QUESTION
+        where QUES_ID = #{userId,jdbcType=DECIMAL}
+    </select>
+</mapper>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.SecurityQuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.team.store.po.SecurityQuestion" >
+    <id column="SECURITY_ID" property="securityId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="QUES_ID" property="quesId" jdbcType="DECIMAL" />
+    <result column="SECURIRY_ANSWER" property="securiryAnswer" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SECURITY_ID, USER_ID, QUES_ID, SECURIRY_ANSWER
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.SecurityQuestionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_SECURITY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_SECURITY
+    where SECURITY_ID = #{securityId,jdbcType=DECIMAL}
+  </select>
+  
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_SECURITY
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from T_SECURITY
+    where SECURITY_ID = #{securityId,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.team.store.po.SecurityQuestionExample" >
+    delete from T_SECURITY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.team.store.po.SecurityQuestion" >
+    <selectKey keyProperty="securityId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_SECURITY_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_SECURITY (SECURITY_ID, USER_ID, QUES_ID, 
+      SECURIRY_ANSWER)
+    values (SEQ_SECURITY_ID.NEXTVAL, #{userId,jdbcType=DECIMAL}, #{quesId,jdbcType=DECIMAL},
+      #{securiryAnswer,jdbcType=VARCHAR})
+  </insert>  
+  <insert id="insertSelective" parameterType="com.team.store.po.SecurityQuestion" >
+    <selectKey keyProperty="securityId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_SECURITY_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_SECURITY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="securityId != null" >
+        SECURITY_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="quesId != null" >
+        QUES_ID,
+      </if>
+      <if test="securiryAnswer != null" >
+        SECURIRY_ANSWER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="securityId != null" >
+        SEQ_SECURITY_ID.NEXTVAL,
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="quesId != null" >
+        #{quesId,jdbcType=DECIMAL},
+      </if>
+      <if test="securiryAnswer != null" >
+        #{securiryAnswer,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.team.store.po.SecurityQuestionExample" resultType="java.lang.Integer" >
+    select count(*) from T_SECURITY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_SECURITY
+    <set >
+      <if test="record.securityId != null" >
+        SECURITY_ID = #{record.securityId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quesId != null" >
+        QUES_ID = #{record.quesId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.securiryAnswer != null" >
+        SECURIRY_ANSWER = #{record.securiryAnswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_SECURITY
+    set SECURITY_ID = #{record.securityId,jdbcType=DECIMAL},
+      USER_ID = #{record.userId,jdbcType=DECIMAL},
+      QUES_ID = #{record.quesId,jdbcType=DECIMAL},
+      SECURIRY_ANSWER = #{record.securiryAnswer,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.SecurityQuestion" >
+    update T_SECURITY
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="quesId != null" >
+        QUES_ID = #{quesId,jdbcType=DECIMAL},
+      </if>
+      <if test="securiryAnswer != null" >
+        SECURIRY_ANSWER = #{securiryAnswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SECURITY_ID = #{securityId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.team.store.po.SecurityQuestion" >
+    update T_SECURITY
+    set USER_ID = #{userId,jdbcType=DECIMAL},
+      QUES_ID = #{quesId,jdbcType=DECIMAL},
+      SECURIRY_ANSWER = #{securiryAnswer,jdbcType=VARCHAR}
+    where SECURITY_ID = #{securityId,jdbcType=DECIMAL}
+  </update>
+</mapper>

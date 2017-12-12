@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.OrderInfoMapper">
+    <resultMap id="BaseResultMap" type="com.team.store.po.OrderInfo">
+        <id column="ORDER_ID" property="orderId" jdbcType="DECIMAL"/>
+        <result column="ORDER_TIME" property="orderTime" jdbcType="TIMESTAMP"/>
+        <result column="ORDER_STATE" property="orderState" jdbcType="DECIMAL"/>
+        <result column="ORDER_LOGISTICS" property="orderLogistics" jdbcType="DECIMAL"/>
+        <result column="USER_ID" property="userId" jdbcType="DECIMAL"/>
+        <result column="ORDER_ADDR" property="orderAddr" jdbcType="VARCHAR"/>
+        <result column="ORDER_PRICE" property="orderPrice" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    ORDER_ID, ORDER_TIME, ORDER_STATE, ORDER_LOGISTICS, USER_ID, ORDER_ADDR, ORDER_PRICE
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.OrderInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from T_ORDER
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from T_ORDER
+        where ORDER_ID = #{orderId,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from T_ORDER
+    where ORDER_ID = #{orderId,jdbcType=DECIMAL}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.team.store.po.OrderInfoExample">
+        delete from T_ORDER
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.team.store.po.OrderInfo">
+        <selectKey keyProperty="orderId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_ORDER_ID.CURRVAL FROM dual
+        </selectKey>
+    insert into T_ORDER (ORDER_ID, ORDER_TIME, ORDER_STATE, 
+      ORDER_LOGISTICS, USER_ID, ORDER_ADDR, 
+      ORDER_PRICE)
+    values (SEQ_ORDER_ID.NEXTVAL, #{orderTime,jdbcType=TIMESTAMP}, #{orderState,jdbcType=DECIMAL},
+      #{orderLogistics,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{orderAddr,jdbcType=VARCHAR}, 
+      #{orderPrice,jdbcType=DECIMAL})
+  </insert>
+    <insert id="insertSelective" parameterType="com.team.store.po.OrderInfo">
+        <selectKey keyProperty="orderId" resultType="java.lang.Integer" order="AFTER">
+            SELECT SEQ_ORDER_ID.CURRVAL FROM dual
+        </selectKey>
+        insert into T_ORDER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                ORDER_ID,
+            </if>
+            <if test="orderTime != null">
+                ORDER_TIME,
+            </if>
+            <if test="orderState != null">
+                ORDER_STATE,
+            </if>
+            <if test="orderLogistics != null">
+                ORDER_LOGISTICS,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="orderAddr != null">
+                ORDER_ADDR,
+            </if>
+            <if test="orderPrice != null">
+                ORDER_PRICE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                SEQ_ORDER_ID.NEXTVAL,
+            </if>
+            <if test="orderTime != null">
+                #{orderTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderState != null">
+                #{orderState,jdbcType=DECIMAL},
+            </if>
+            <if test="orderLogistics != null">
+                #{orderLogistics,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAddr != null">
+                #{orderAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="orderPrice != null">
+                #{orderPrice,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.team.store.po.OrderInfoExample" resultType="java.lang.Integer">
+        select count(*) from T_ORDER
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update T_ORDER
+        <set>
+            <if test="record.orderId != null">
+                ORDER_ID = #{record.orderId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.orderTime != null">
+                ORDER_TIME = #{record.orderTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.orderState != null">
+                ORDER_STATE = #{record.orderState,jdbcType=DECIMAL},
+            </if>
+            <if test="record.orderLogistics != null">
+                ORDER_LOGISTICS = #{record.orderLogistics,jdbcType=DECIMAL},
+            </if>
+            <if test="record.userId != null">
+                USER_ID = #{record.userId,jdbcType=DECIMAL},
+            </if>
+            <if test="record.orderAddr != null">
+                ORDER_ADDR = #{record.orderAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderPrice != null">
+                ORDER_PRICE = #{record.orderPrice,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update T_ORDER
+        set ORDER_ID = #{record.orderId,jdbcType=DECIMAL},
+        ORDER_TIME = #{record.orderTime,jdbcType=TIMESTAMP},
+        ORDER_STATE = #{record.orderState,jdbcType=DECIMAL},
+        ORDER_LOGISTICS = #{record.orderLogistics,jdbcType=DECIMAL},
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+        ORDER_ADDR = #{record.orderAddr,jdbcType=VARCHAR},
+        ORDER_PRICE = #{record.orderPrice,jdbcType=DECIMAL}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.OrderInfo">
+        update T_ORDER
+        <set>
+            <if test="orderTime != null">
+                ORDER_TIME = #{orderTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderState != null">
+                ORDER_STATE = #{orderState,jdbcType=DECIMAL},
+            </if>
+            <if test="orderLogistics != null">
+                ORDER_LOGISTICS = #{orderLogistics,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAddr != null">
+                ORDER_ADDR = #{orderAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="orderPrice != null">
+                ORDER_PRICE = #{orderPrice,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where ORDER_ID = #{orderId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.team.store.po.OrderInfo">
+    update T_ORDER
+    set ORDER_TIME = #{orderTime,jdbcType=TIMESTAMP},
+      ORDER_STATE = #{orderState,jdbcType=DECIMAL},
+      ORDER_LOGISTICS = #{orderLogistics,jdbcType=DECIMAL},
+      USER_ID = #{userId,jdbcType=DECIMAL},
+      ORDER_ADDR = #{orderAddr,jdbcType=VARCHAR},
+      ORDER_PRICE = #{orderPrice,jdbcType=DECIMAL}
+    where ORDER_ID = #{orderId,jdbcType=DECIMAL}
+  </update>
+    <!-- 设置一个sql集合 -->
+    <sql id="Order_Pro_VO_Column_List">
+    PRO_ID,PRO_NAME,PRO_PRICE,PRO_IMG,PC_ID,PB_ID,PT_ID,
+    ORDER_LEVLE1,ORDER_LEVLE2,op.PRO_NUM,PRO_EXPRESS,op.ORDER_ID,
+    op.APPRAIS_STATUS,ORDER_TIME,ORDER_STATE,ORDER_LOGISTICS,
+    ORDER_PRICE,ORDER_ADDR,p.PRO_DESC
+
+  </sql>
+    <!-- rl订单商品连表 -->
+    <resultMap id="listOrderAndProductVoMap" type="com.team.store.vo.rl.OrderAndProduct">
+        <id column="PRO_ID" jdbcType="DECIMAL" property="proId" />
+        <result column="PRO_NAME" jdbcType="VARCHAR" property="proName" />
+        <result column="PRO_PRICE" jdbcType="DECIMAL" property="proPrice" />
+        <result column="PRO_IMG" jdbcType="VARCHAR" property="proImg" />
+        <result column="PC_ID" jdbcType="DECIMAL" property="pcId" />
+        <result column="PB_ID" jdbcType="DECIMAL" property="pbId" />
+        <result column="PT_ID" jdbcType="DECIMAL" property="ptId" />
+        <result column="ORDER_LEVLE1" jdbcType="VARCHAR" property="orderLevle1" />
+        <result column="ORDER_LEVLE2" jdbcType="VARCHAR" property="orderLevle2" />
+        <result column="PRO_NUM" jdbcType="DECIMAL" property="proNum" />
+        <result column="PRO_EXPRESS" jdbcType="DECIMAL" property="proExpress" />
+        <result column="ORDER_ID" jdbcType="DECIMAL" property="orderId" />
+        <result column="ORDER_TIME" jdbcType="TIMESTAMP" property="orderTime" />
+        <result column="ORDER_STATE" jdbcType="DECIMAL" property="orderState" />
+        <result column="ORDER_LOGISTICS" jdbcType="DECIMAL" property="orderLogistics" />
+        <result column="ORDER_PRICE" jdbcType="DECIMAL" property="orderPrice" />
+        <result column="PRO_PRICE" jdbcType="DECIMAL" property="proPrice" />
+        <result column="ORDER_ADDR" jdbcType="VARCHAR" property="orderAddr" />
+        <result column="PRO_DESC" jdbcType="VARCHAR" property="proDesc" />
+        <result column="APPRAIS_STATUS" jdbcType="DECIMAL" property="appraisStatus" />
+
+    </resultMap>
+    <select id="getOrderAndProductListById" parameterType="int" resultMap="listOrderAndProductVoMap">
+        select
+        <include refid="Order_Pro_VO_Column_List"/>
+        from
+        T_ORDER_PRO op left join t_order o on op.order_id = o.order_id
+        left join t_product p on op.pro_id=p.pro_id
+        where o.order_id=#{param1,jdbcType=DECIMAL}<!-- and o.user_id=#{param2,jdbcType=DECIMAL} order by
+    o.order_id -->
+    </select>
+    <select id="getOrderAndProductList" parameterType="int" resultMap="listOrderAndProductVoMap">
+        select
+        <include refid="Order_Pro_VO_Column_List"/>
+        from
+        t_order_pro op left join t_order o on op.order_id = o.order_id
+        left join t_product p on op.pro_id=p.pro_id
+        where o.user_id=#{param1,jdbcType=DECIMAL} order by
+        o.order_id
+    </select>
+    
+</mapper>

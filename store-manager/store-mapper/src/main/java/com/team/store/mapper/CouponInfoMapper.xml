@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.CouponInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.team.store.po.CouponInfo" >
+    <id column="COUPON_ID" property="couponId" jdbcType="DECIMAL" />
+    <result column="COUPON_PRICE" property="couponPrice" jdbcType="DECIMAL" />
+    <result column="COUPON_CONDITION" property="couponCondition" jdbcType="DECIMAL" />
+    <result column="COUPON_STATE" property="couponState" jdbcType="VARCHAR" />
+    <result column="COUPON_STARTTIME" property="couponStarttime" jdbcType="DATE" />
+    <result column="COUPON_ENDTIME" property="couponEndtime" jdbcType="DATE" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    COUPON_ID, COUPON_PRICE, COUPON_CONDITION, COUPON_STATE, COUPON_STARTTIME, COUPON_ENDTIME, 
+    USER_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.CouponInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_COUPON
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_COUPON
+    where COUPON_ID = #{couponId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from T_COUPON
+    where COUPON_ID = #{couponId,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.team.store.po.CouponInfoExample" >
+    delete from T_COUPON
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.team.store.po.CouponInfo">
+    <selectKey keyProperty="couponId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_COUPON_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_COUPON (COUPON_ID, COUPON_PRICE, COUPON_CONDITION,
+      COUPON_STATE, COUPON_STARTTIME, COUPON_ENDTIME, 
+      USER_ID)
+    values (SEQ_COUPON_ID.NEXTVAL, #{couponPrice,jdbcType=DECIMAL}, #{couponCondition,jdbcType=DECIMAL},
+      #{couponState,jdbcType=VARCHAR}, #{couponStarttime,jdbcType=DATE}, #{couponEndtime,jdbcType=DATE}, 
+      #{userId,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.team.store.po.CouponInfo" >
+    <selectKey keyProperty="couponId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_COUPON_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_COUPON
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        COUPON_ID,
+      </if>
+      <if test="couponPrice != null" >
+        COUPON_PRICE,
+      </if>
+      <if test="couponCondition != null" >
+        COUPON_CONDITION,
+      </if>
+      <if test="couponState != null" >
+        COUPON_STATE,
+      </if>
+      <if test="couponStarttime != null" >
+        COUPON_STARTTIME,
+      </if>
+      <if test="couponEndtime != null" >
+        COUPON_ENDTIME,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="couponId != null" >
+        SEQ_COUPON_ID.NEXTVAL,
+      </if>
+      <if test="couponPrice != null" >
+        #{couponPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="couponCondition != null" >
+        #{couponCondition,jdbcType=DECIMAL},
+      </if>
+      <if test="couponState != null" >
+        #{couponState,jdbcType=VARCHAR},
+      </if>
+      <if test="couponStarttime != null" >
+        #{couponStarttime,jdbcType=DATE},
+      </if>
+      <if test="couponEndtime != null" >
+        #{couponEndtime,jdbcType=DATE},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.team.store.po.CouponInfoExample" resultType="java.lang.Integer" >
+    select count(*) from T_COUPON
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_COUPON
+    <set >
+      <if test="record.couponId != null" >
+        COUPON_ID = #{record.couponId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.couponPrice != null" >
+        COUPON_PRICE = #{record.couponPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.couponCondition != null" >
+        COUPON_CONDITION = #{record.couponCondition,jdbcType=DECIMAL},
+      </if>
+      <if test="record.couponState != null" >
+        COUPON_STATE = #{record.couponState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponStarttime != null" >
+        COUPON_STARTTIME = #{record.couponStarttime,jdbcType=DATE},
+      </if>
+      <if test="record.couponEndtime != null" >
+        COUPON_ENDTIME = #{record.couponEndtime,jdbcType=DATE},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_COUPON
+    set COUPON_ID = #{record.couponId,jdbcType=DECIMAL},
+      COUPON_PRICE = #{record.couponPrice,jdbcType=DECIMAL},
+      COUPON_CONDITION = #{record.couponCondition,jdbcType=DECIMAL},
+      COUPON_STATE = #{record.couponState,jdbcType=VARCHAR},
+      COUPON_STARTTIME = #{record.couponStarttime,jdbcType=DATE},
+      COUPON_ENDTIME = #{record.couponEndtime,jdbcType=DATE},
+      USER_ID = #{record.userId,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.CouponInfo" >
+    update T_COUPON
+    <set >
+      <if test="couponPrice != null" >
+        COUPON_PRICE = #{couponPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="couponCondition != null" >
+        COUPON_CONDITION = #{couponCondition,jdbcType=DECIMAL},
+      </if>
+      <if test="couponState != null" >
+        COUPON_STATE = #{couponState,jdbcType=VARCHAR},
+      </if>
+      <if test="couponStarttime != null" >
+        COUPON_STARTTIME = #{couponStarttime,jdbcType=DATE},
+      </if>
+      <if test="couponEndtime != null" >
+        COUPON_ENDTIME = #{couponEndtime,jdbcType=DATE},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where COUPON_ID = #{couponId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.team.store.po.CouponInfo" >
+    update T_COUPON
+    set COUPON_PRICE = #{couponPrice,jdbcType=DECIMAL},
+      COUPON_CONDITION = #{couponCondition,jdbcType=DECIMAL},
+      COUPON_STATE = #{couponState,jdbcType=VARCHAR},
+      COUPON_STARTTIME = #{couponStarttime,jdbcType=DATE},
+      COUPON_ENDTIME = #{couponEndtime,jdbcType=DATE},
+      USER_ID = #{userId,jdbcType=DECIMAL}
+    where COUPON_ID = #{couponId,jdbcType=DECIMAL}
+  </update>
+</mapper>

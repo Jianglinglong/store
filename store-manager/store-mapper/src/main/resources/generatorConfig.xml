@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- 启动逆向生成 -->
+<generatorConfiguration>
+    <classPathEntry location="E:\jiang\mvnrepository\com\oracle\ojdbc14\10.2.0\ojdbc14-10.2.0.jar"/>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+                        connectionURL="jdbc:oracle:thin:@192.168.131.173:1521:orcl" userId="apple"
+                        password="apple">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体的位置 -->
+        <javaModelGenerator targetPackage="com.team.store.po"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成XML文件的位置 -->
+        <sqlMapGenerator targetPackage="com.team.store.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.team.store.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--<table tableName="T_ADDRESS" domainObjectName="AddressInfo">-->
+            <!--<columnOverride column="ADDR_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 评价表 &ndash;&gt;-->
+        <!--<table tableName="T_APPRAISE" domainObjectName="AppraiseInfo">-->
+            <!--<columnOverride column="APPR_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="APPR_TYPE" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 退单表 &ndash;&gt;-->
+        <!--<table tableName="T_BACK" domainObjectName="BackOrder">-->
+            <!--<columnOverride column="BACK_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_STATE" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_LOGISTICS" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="BACK_MONEY" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 优惠券表 &ndash;&gt;-->
+        <!--<table tableName="T_COUPON" domainObjectName="CouponInfo">-->
+            <!--<columnOverride column="COUPON_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="COUPON_PRICE" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="COUPON_CONDITION" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 收藏表 &ndash;&gt;-->
+        <!--<table tableName="T_FAVORITE" domainObjectName="Favorite">-->
+            <!--<columnOverride column="FAVORITE_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash;  历史记录表&ndash;&gt;-->
+        <!--<table tableName="T_HISTORY" domainObjectName="History">-->
+            <!--<columnOverride column="HISTORY_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 用户余额表 &ndash;&gt;-->
+        <!--<table tableName="T_MONEY" domainObjectName="MoneyInfo">-->
+            <!--<columnOverride column="MON_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="MON_MONEY" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 余额操作表 &ndash;&gt;-->
+        <!--<table tableName="T_MONEYOP" domainObjectName="MoneyOpInfo">-->
+            <!--<columnOverride column="MONEYOP_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="MONEYOP_MONEY" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="MONEY_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="REMAIN_MONEY" javaType="java.lang.Double"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 订单表 &ndash;&gt;-->
+        <!--<table tableName="T_ORDER" domainObjectName="OrderInfo">-->
+            <!--<columnOverride column="ORDER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_STATE" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_LOGISTICS" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="ORDER_PRICE" javaType="java.lang.Double"/>-->
+        <!--</table>-->
+        <!-- 订单商品表 -->
+        <table tableName="T_ORDER_PRO" domainObjectName="OrderProInfo">
+            <columnOverride column="ORDER_PRO_ID" javaType="java.lang.Integer"/>
+            <columnOverride column="USER_ID" javaType="java.lang.Integer"/>
+            <columnOverride column="PRO_ID" javaType="java.lang.Integer"/>
+            <columnOverride column="ORDER_ID" javaType="java.lang.Integer"/>
+            <columnOverride column="PRO_NUM" javaType="java.lang.Integer"/>
+            <columnOverride column="PRO_PRICE" javaType="java.lang.Double"/>
+        </table>
+        <!--&lt;!&ndash; 红包表 &ndash;&gt;-->
+        <!--<table tableName="T_PACKET" domainObjectName="Packet">-->
+            <!--<columnOverride column="PACKET_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PACKET_TOTAL_MONEY" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="PACKET_REMAIN_MONEY" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="PACKET_FROM" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 积分表 &ndash;&gt;-->
+        <!--<table tableName="T_POINTS" domainObjectName="PointInfo">-->
+            <!--<columnOverride column="POINT_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="POINT_NUM" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 积分变更表 &ndash;&gt;-->
+        <!--<table tableName="T_POINTSOP" domainObjectName="PointOperator">-->
+            <!--<columnOverride column="POINTOP_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="POINT_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="POINT_NUM" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 商品表 &ndash;&gt;-->
+        <!--<table tableName="T_PRODUCT" domainObjectName="ProductInfo">-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_PRICE" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="PC_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PB_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PT_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_NUM" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_EXPRESS" javaType="java.lang.Double"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 商品分类表 &ndash;&gt;-->
+        <!--<table tableName="T_PRODUCTCLASS" domainObjectName="ProductClass">-->
+            <!--<columnOverride column="PC_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 商品品牌表 &ndash;&gt;-->
+        <!--<table tableName="T_PRO_BRAND" domainObjectName="ProBrand">-->
+            <!--<columnOverride column="PB_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PC_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 商品月销量表 &ndash;&gt;-->
+        <!--<table tableName="T_PRO_M_SALES" domainObjectName="ProMonthSales">-->
+            <!--<columnOverride column="PMS_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PMS_NUM" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 商品总销量 &ndash;&gt;-->
+        <!--<table tableName="T_PRO_SALES" domainObjectName="ProTotalSales">-->
+            <!--<columnOverride column="PS_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PS_NUM" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 商品类型 &ndash;&gt;-->
+        <!--<table tableName="T_PRO_TYPE" domainObjectName="ProType">-->
+            <!--<columnOverride column="PT_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 安全问题表 &ndash;&gt;-->
+        <!--<table tableName="T_QUESTION" domainObjectName="QuestionInfo">-->
+            <!--<columnOverride column="QUES_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 用户安全问题答案表 &ndash;&gt;-->
+        <!--<table tableName="T_SECURITY" domainObjectName="SecurityQuestion">-->
+            <!--<columnOverride column="SECURITY_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="QUES_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 购物车表 &ndash;&gt;-->
+        <!--<table tableName="T_SHOPCART" domainObjectName="ShopCart">-->
+            <!--<columnOverride column="SHOPCART_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_ID" javaType="java.lang.Integer"/>-->
+            <!--<columnOverride column="PRO_PRICE" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="PRO_MONEY" javaType="java.lang.Double"/>-->
+            <!--<columnOverride column="PRO_NUM" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+        <!--&lt;!&ndash; 用户表 &ndash;&gt;-->
+        <!--<table tableName="T_USER" domainObjectName="UserInfo">-->
+            <!--<columnOverride column="USER_ID" javaType="java.lang.Integer"/>-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team.store.mapper.AddressInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.team.store.po.AddressInfo" >
+    <id column="ADDR_ID" property="addrId" jdbcType="DECIMAL" />
+    <result column="ADDR_ADDRESS" property="addrAddress" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="ADDR_PHONE" property="addrPhone" jdbcType="VARCHAR" />
+    <result column="ADDR_PEOPLE" property="addrPeople" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ADDR_ID, ADDR_ADDRESS, USER_ID, ADDR_PHONE, ADDR_PEOPLE
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.team.store.po.AddressInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_ADDRESS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_ADDRESS
+    where ADDR_ID = #{addrId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selectAddressByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_ADDRESS
+    where ADDR_ID = #{addrId,jdbcType=DECIMAL}
+  </select>
+  
+
+  
+    <select id="selectAddressByUserKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_ADDRESS
+    where USER_ID = #{userId}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from T_ADDRESS
+    where ADDR_ID = #{addrId,jdbcType=DECIMAL}
+  </delete>
+  
+  
+  <delete id="deleteByExample" parameterType="com.team.store.po.AddressInfoExample" >
+    delete from T_ADDRESS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.team.store.po.AddressInfo" keyColumn="ADDR_ID">
+    <selectKey keyProperty="addrId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_ADDR_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_ADDRESS (ADDR_ID, ADDR_ADDRESS, USER_ID, 
+      ADDR_PHONE, ADDR_PEOPLE)
+    values (SEQ_ADDR_ID.NEXTVAL, #{addrAddress,jdbcType=VARCHAR}, #{userId,jdbcType=DECIMAL},
+      #{addrPhone,jdbcType=VARCHAR}, #{addrPeople,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.team.store.po.AddressInfo">
+    <selectKey keyProperty="addrId" resultType="java.lang.Integer" order="AFTER">
+      SELECT SEQ_ADDR_ID.CURRVAL FROM dual
+    </selectKey>
+    insert into T_ADDRESS
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addrId != null" >
+        ADDR_ID,
+      </if>
+      <if test="addrAddress != null" >
+        ADDR_ADDRESS,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="addrPhone != null" >
+        ADDR_PHONE,
+      </if>
+      <if test="addrPeople != null" >
+        ADDR_PEOPLE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addrId != null" >
+        SEQ_ADDR_ID.NEXTVAL,
+      </if>
+      <if test="addrAddress != null" >
+        #{addrAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="addrPhone != null" >
+        #{addrPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="addrPeople != null" >
+        #{addrPeople,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.team.store.po.AddressInfoExample" resultType="java.lang.Integer" >
+    select count(*) from T_ADDRESS
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_ADDRESS
+    <set >
+      <if test="record.addrId != null" >
+        ADDR_ID = #{record.addrId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.addrAddress != null" >
+        ADDR_ADDRESS = #{record.addrAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.addrPhone != null" >
+        ADDR_PHONE = #{record.addrPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrPeople != null" >
+        ADDR_PEOPLE = #{record.addrPeople,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_ADDRESS
+    set ADDR_ID = #{record.addrId,jdbcType=DECIMAL},
+      ADDR_ADDRESS = #{record.addrAddress,jdbcType=VARCHAR},
+      USER_ID = #{record.userId,jdbcType=DECIMAL},
+      ADDR_PHONE = #{record.addrPhone,jdbcType=VARCHAR},
+      ADDR_PEOPLE = #{record.addrPeople,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.team.store.po.AddressInfo" >
+    update T_ADDRESS
+    <set >
+      <if test="addrAddress != null" >
+        ADDR_ADDRESS = #{addrAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="addrPhone != null" >
+        ADDR_PHONE = #{addrPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="addrPeople != null" >
+        ADDR_PEOPLE = #{addrPeople,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ADDR_ID = #{addrId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.team.store.po.AddressInfo" >
+    update T_ADDRESS
+    set ADDR_ADDRESS = #{addrAddress,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=DECIMAL},
+      ADDR_PHONE = #{addrPhone,jdbcType=VARCHAR},
+      ADDR_PEOPLE = #{addrPeople,jdbcType=VARCHAR}
+    where ADDR_ID = #{addrId,jdbcType=DECIMAL}
+  </update>
+</mapper>
